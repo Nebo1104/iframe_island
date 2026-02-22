@@ -2,65 +2,132 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<title>Island Investor Game</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Island Investor</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
 
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+/* BACKGROUND */
 body{
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to bottom,#0c4a6e,#38bdf8);
-    color:white;
-    text-align:center;
-    padding:40px;
+    font-family:'Inter', Arial, sans-serif;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+        linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+        url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80")
+        center/cover no-repeat fixed;
+
+    animation:bgMove 40s ease infinite;
+    color:#0f172a;
 }
 
-h1{
-    margin-bottom:20px;
+/* BG MOVE */
+@keyframes bgMove{
+    0%{background-position:center;}
+    50%{background-position:55% 45%;}
+    100%{background-position:center;}
 }
 
+/* GAME BOX */
 #game{
-    max-width:600px;
-    margin:auto;
-    background:rgba(0,0,0,0.4);
-    padding:30px;
-    border-radius:15px;
+    width:100%;
+    max-width:720px;
+
+    background:rgba(255,255,255,0.92);
+    backdrop-filter:blur(14px);
+
+    padding:50px;
+    border-radius:28px;
+
+    box-shadow:0 40px 80px rgba(0,0,0,0.35);
+
+    animation:fadeIn 1.2s ease forwards;
 }
 
+/* FADE */
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(30px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+/* TITLE */
+h1{
+    font-family:'Playfair Display', serif;
+    text-align:center;
+    font-size:2.4rem;
+    margin-bottom:25px;
+}
+
+/* STATS */
 .stats{
-    font-size:1.2rem;
-    margin:20px 0;
+    display:flex;
+    justify-content:space-between;
+    background:#f1f5f9;
+    padding:15px 20px;
+    border-radius:15px;
+    margin:25px 0;
+    font-weight:500;
 }
 
+/* BUTTON */
 button{
-    background:#fbbf24;
+    background:linear-gradient(135deg,#facc15,#f59e0b);
     border:none;
-    padding:12px 25px;
-    border-radius:25px;
+    padding:14px 28px;
+    border-radius:30px;
     cursor:pointer;
     font-size:1rem;
-    margin:10px;
+    margin:15px 0;
     transition:0.3s;
+    font-weight:500;
 }
 
 button:hover{
-    background:#f59e0b;
+    transform:scale(1.05);
+    box-shadow:0 10px 20px rgba(245,158,11,0.4);
 }
 
+/* UPGRADES */
 .upgrades{
     margin-top:30px;
 }
 
 .upgrade{
-    background:rgba(255,255,255,0.1);
-    padding:15px;
-    margin:15px 0;
-    border-radius:10px;
+    background:#f8fafc;
+    padding:20px;
+    margin:20px 0;
+    border-radius:18px;
+    border:1px solid #e2e8f0;
+    transition:0.3s;
+}
+
+.upgrade:hover{
+    box-shadow:0 15px 25px rgba(0,0,0,0.1);
+}
+
+.upgrade-title{
+    font-weight:600;
+    margin-bottom:8px;
 }
 
 footer{
+    text-align:center;
     margin-top:25px;
     font-size:0.8rem;
-    opacity:0.7;
+    color:#64748b;
 }
 
 </style>
@@ -69,70 +136,86 @@ footer{
 
 <body>
 
-<h1>🏝️ Island Investor</h1>
-
 <div id="game">
 
-    <p>Розвивай острів та заробляй мільйони</p>
+<h1>🏝️ Island Investor</h1>
 
-    <div class="stats">
-        💰 Капітал: <span id="money">0</span> $
-        <br>
-        📈 Прибуток за клік: <span id="clickValue">1</span> $
-    </div>
+<p style="text-align:center;">Розвивай острів та стань інвестором №1</p>
 
-    <button onclick="earn()">Інвестувати</button>
+<div class="stats">
+    <div>💰 Капітал: <span id="money">0</span> $</div>
+    <div>📈 За клік: <span id="clickValue">1</span> $</div>
+    <div>🏆 Рівень: <span id="level">1</span></div>
+</div>
 
-    <div class="upgrades">
+<button onclick="earn()">Інвестувати</button>
 
-        <h3>Покращення</h3>
+<div class="stats">
+    <div>⚙️ Пасивний дохід: <span id="auto">0</span> $/с</div>
+</div>
 
-        <div class="upgrade">
-            🏖️ Пляжний курорт<br>
-            Ціна: <span id="u1cost">50</span> $<br>
-            +5 $ за клік<br><br>
-            <button onclick="buyUpgrade(1)">Купити</button>
-        </div>
+<div class="upgrades">
 
-        <div class="upgrade">
-            🛥️ Яхтова марина<br>
-            Ціна: <span id="u2cost">200</span> $<br>
-            +15 $ за клік<br><br>
-            <button onclick="buyUpgrade(2)">Купити</button>
-        </div>
+<h3>Покращення</h3>
 
-        <div class="upgrade">
-            🏨 Люкс-готель<br>
-            Ціна: <span id="u3cost">500</span> $<br>
-            +40 $ за клік<br><br>
-            <button onclick="buyUpgrade(3)">Купити</button>
-        </div>
+<div class="upgrade">
+    <div class="upgrade-title">🏖️ Пляжний курорт</div>
+    Ціна: <span id="u1cost">50</span> $ | +5 за клік | +1$/с<br>
+    <button onclick="buyUpgrade(1)">Купити</button>
+</div>
 
-    </div>
+<div class="upgrade">
+    <div class="upgrade-title">🛥️ Яхта</div>
+    Ціна: <span id="u2cost">200</span> $ | +15 за клік | +3$/с<br>
+    <button onclick="buyUpgrade(2)">Купити</button>
+</div>
+
+<div class="upgrade">
+    <div class="upgrade-title">🏨 Люкс-готель</div>
+    Ціна: <span id="u3cost">500</span> $ | +40 за клік | +7$/с<br>
+    <button onclick="buyUpgrade(3)">Купити</button>
+</div>
 
 </div>
 
 <footer>
-    © Oceanic Property Group — Interactive Demo
+© Oceanic Property Group — Interactive Demo
 </footer>
+
+</div>
 
 
 <script>
 
-let money = 0;
-let clickValue = 1;
+/* LOAD */
+let money = Number(localStorage.getItem("money")) || 0;
+let clickValue = Number(localStorage.getItem("click")) || 1;
+let autoIncome = Number(localStorage.getItem("auto")) || 0;
+let level = Number(localStorage.getItem("level")) || 1;
 
 let upgrades = {
-    1: { cost:50, bonus:5 },
-    2: { cost:200, bonus:15 },
-    3: { cost:500, bonus:40 }
+    1: { cost:50, bonus:5, auto:1 },
+    2: { cost:200, bonus:15, auto:3 },
+    3: { cost:500, bonus:40, auto:7 }
 };
 
+/* SAVE */
+function save(){
+    localStorage.setItem("money",money);
+    localStorage.setItem("click",clickValue);
+    localStorage.setItem("auto",autoIncome);
+    localStorage.setItem("level",level);
+}
+
+/* CLICK */
 function earn(){
     money += clickValue;
+    checkLevel();
+    save();
     update();
 }
 
+/* BUY */
 function buyUpgrade(id){
 
     let up = upgrades[id];
@@ -140,33 +223,60 @@ function buyUpgrade(id){
     if(money >= up.cost){
 
         money -= up.cost;
+
         clickValue += up.bonus;
+        autoIncome += up.auto;
 
         up.cost = Math.floor(up.cost * 1.7);
 
+        save();
         updateCosts();
         update();
-
-    }else{
-        alert("Недостатньо коштів 💸");
     }
 }
 
+/* LEVEL */
+function checkLevel(){
+
+    let newLevel = Math.floor(money / 1000) + 1;
+
+    if(newLevel > level){
+        level = newLevel;
+        clickValue += 5;
+        autoIncome += 2;
+    }
+}
+
+/* AUTO INCOME */
+setInterval(()=>{
+    money += autoIncome;
+    checkLevel();
+    save();
+    update();
+},1000);
+
+/* UPDATE */
 function update(){
 
-    document.getElementById("money").innerText = money;
-    document.getElementById("clickValue").innerText = clickValue;
-
+    moneyEl.innerText = money;
+    clickEl.innerText = clickValue;
+    autoEl.innerText = autoIncome;
+    levelEl.innerText = level;
 }
 
 function updateCosts(){
-
-    document.getElementById("u1cost").innerText = upgrades[1].cost;
-    document.getElementById("u2cost").innerText = upgrades[2].cost;
-    document.getElementById("u3cost").innerText = upgrades[3].cost;
-
+    u1cost.innerText = upgrades[1].cost;
+    u2cost.innerText = upgrades[2].cost;
+    u3cost.innerText = upgrades[3].cost;
 }
 
+/* INIT */
+const moneyEl = document.getElementById("money");
+const clickEl = document.getElementById("clickValue");
+const autoEl = document.getElementById("auto");
+const levelEl = document.getElementById("level");
+
+updateCosts();
 update();
 
 </script>
