@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<title>Island Investor Game</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom,#0c4a6e,#38bdf8);
+    color:white;
+    text-align:center;
+    padding:40px;
+}
+
+h1{
+    margin-bottom:20px;
+}
+
+#game{
+    max-width:600px;
+    margin:auto;
+    background:rgba(0,0,0,0.4);
+    padding:30px;
+    border-radius:15px;
+}
+
+.stats{
+    font-size:1.2rem;
+    margin:20px 0;
+}
+
+button{
+    background:#fbbf24;
+    border:none;
+    padding:12px 25px;
+    border-radius:25px;
+    cursor:pointer;
+    font-size:1rem;
+    margin:10px;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#f59e0b;
+}
+
+.upgrades{
+    margin-top:30px;
+}
+
+.upgrade{
+    background:rgba(255,255,255,0.1);
+    padding:15px;
+    margin:15px 0;
+    border-radius:10px;
+}
+
+footer{
+    margin-top:25px;
+    font-size:0.8rem;
+    opacity:0.7;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<h1>🏝️ Island Investor</h1>
+
+<div id="game">
+
+    <p>Розвивай острів та заробляй мільйони</p>
+
+    <div class="stats">
+        💰 Капітал: <span id="money">0</span> $
+        <br>
+        📈 Прибуток за клік: <span id="clickValue">1</span> $
+    </div>
+
+    <button onclick="earn()">Інвестувати</button>
+
+    <div class="upgrades">
+
+        <h3>Покращення</h3>
+
+        <div class="upgrade">
+            🏖️ Пляжний курорт<br>
+            Ціна: <span id="u1cost">50</span> $<br>
+            +5 $ за клік<br><br>
+            <button onclick="buyUpgrade(1)">Купити</button>
+        </div>
+
+        <div class="upgrade">
+            🛥️ Яхтова марина<br>
+            Ціна: <span id="u2cost">200</span> $<br>
+            +15 $ за клік<br><br>
+            <button onclick="buyUpgrade(2)">Купити</button>
+        </div>
+
+        <div class="upgrade">
+            🏨 Люкс-готель<br>
+            Ціна: <span id="u3cost">500</span> $<br>
+            +40 $ за клік<br><br>
+            <button onclick="buyUpgrade(3)">Купити</button>
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+    © Oceanic Property Group — Interactive Demo
+</footer>
+
+
+<script>
+
+let money = 0;
+let clickValue = 1;
+
+let upgrades = {
+    1: { cost:50, bonus:5 },
+    2: { cost:200, bonus:15 },
+    3: { cost:500, bonus:40 }
+};
+
+function earn(){
+    money += clickValue;
+    update();
+}
+
+function buyUpgrade(id){
+
+    let up = upgrades[id];
+
+    if(money >= up.cost){
+
+        money -= up.cost;
+        clickValue += up.bonus;
+
+        up.cost = Math.floor(up.cost * 1.7);
+
+        updateCosts();
+        update();
+
+    }else{
+        alert("Недостатньо коштів 💸");
+    }
+}
+
+function update(){
+
+    document.getElementById("money").innerText = money;
+    document.getElementById("clickValue").innerText = clickValue;
+
+}
+
+function updateCosts(){
+
+    document.getElementById("u1cost").innerText = upgrades[1].cost;
+    document.getElementById("u2cost").innerText = upgrades[2].cost;
+    document.getElementById("u3cost").innerText = upgrades[3].cost;
+
+}
+
+update();
+
+</script>
+
+</body>
+</html>
